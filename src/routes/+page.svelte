@@ -1,59 +1,58 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	$: tabWidth = 200;
+	$: notesTabFlex = `${tabWidth}px`;
+
+	const handleDragEnd = (e) => {
+		tabWidth = e.clientX;
+	};
+
+	const handleDrag = (e) => {
+		console.log(e);
+		tabWidth = e.clientX;
+	};
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<div class="container" style="--notes-tab-flex: {notesTabFlex}">
+	<div class="notes-tab">
+		<h1>Notes</h1>
+		Hello World1
+	</div>
+	<div
+		id="border"
+		class="draggable"
+		draggable="true"
+		on:drag={handleDrag}
+		on:dragend={handleDragEnd}
+	>
+		.
+	</div>
+	<div class="note-pad">Hello World 2</div>
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
 	h1 {
-		width: 100%;
+		margin: 0;
+	}
+	.container {
+		display: flex;
+		flex-direction: row;
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
+	.notes-tab {
+		flex-basis: var(--notes-tab-flex);
+		flex-grow: 0;
+		height: 100vh;
 	}
 
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	.draggable {
+		height: 100vh;
+		cursor: col-resize;
+		content: '';
+		background-color: lightgray;
+	}
+
+	.note-pad {
+		flex-grow: 1;
+		height: 100vh;
 	}
 </style>
